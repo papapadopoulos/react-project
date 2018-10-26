@@ -12,7 +12,7 @@ const NavigationBar = () => {
       </Navbar.Header>
       <Nav>
         <NavItem eventKey={1} href="#">
-          Courses
+        <Link to="/courses">Courses</Link>
         </NavItem>
       </Nav>
       <Nav pullRight={true}>
