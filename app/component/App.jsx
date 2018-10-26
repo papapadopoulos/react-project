@@ -1,45 +1,25 @@
 import React from "react";
-
-import Hero from "./Hero";
-import Badge from "./Badge";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import NavigationBar from "./NavigationBar";
-import LastCourses from "./LastCourses";
-import {Nav, NavItem} from "react-bootstrap";
-import axios from "axios";
+import Course from "./Course";
+import Home from "./Home";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { 
-      stats: [],
-      courses: []
-    };
-  }
-  componentDidMount() {
-    axios.get("http://localhost:3000/stats").then(res => {
-      const stats = res.data;
-      this.setState({ stats });
-    });
-
-    axios.get("http://localhost:3000/courses").then(res => {
-      const courses = res.data;
-      this.setState({ courses });
-    });
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
-    const { stats, courses } = this.state;
-
     return (
       <>
         <NavigationBar />
-        <Hero />
-        <Nav justified={true}>
-          {stats.map(stat => (
-            <NavItem key={stat.id}><Badge key={stat.id} title={stat.title} bubble={stat.amount} /></NavItem>
-          ))}
-        </Nav>
-        <LastCourses courses={courses}/>
+
+        <Router>
+          <div>
+            <Route exact path="/" component={Home} />
+            <Route path="/course" component={Course} />
+          </div>
+        </Router>
       </>
     );
   }
