@@ -9,7 +9,9 @@ import {
   Button,
   ButtonGroup
 } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 import Instructor from "./Instructor";
+import Prompt from "./Modals/Prompt";
 
 class Course extends React.Component {
   constructor({ props, match }) {
@@ -18,6 +20,43 @@ class Course extends React.Component {
     this.state = { isFetching: true };
   }
 
+  showPrompt = () => {
+    this.setState({
+      showPrompt: true
+    });
+  };
+
+  renderPrompt = () => {
+    if (this.state.showPrompt) {
+      return (
+        <Prompt
+          show={true}
+          action={() => this.handleDelete(this.state.course.id)}
+          actionTitle="Delete"
+          title={`Deleting ${this.state.course.title}...`}
+          description="Are you sure you want to delete this course? Seems quite useful to me!"
+        />
+      );
+    }
+  };
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/" />;
+    }
+  };
+
+  handleDelete = id => {
+    {
+      console.log("delete handled");
+    }
+    axios.delete(`http://localhost:3000/courses/${id}`).then(() => {
+      this.setState({
+        redirect: true
+      });
+    });
+  };
+
   componentDidMount() {
     axios
       .get(`http://localhost:3000/courses/${this.match.params.courseId}`)
@@ -25,7 +64,6 @@ class Course extends React.Component {
         const course = res.data;
         this.setState({
           course: course
-         
         });
         axios
           .get(`http://localhost:3000/instructors/${course.instructors[0]}`)
@@ -45,9 +83,11 @@ class Course extends React.Component {
     if (!isFetching) {
       return (
         <div>
+          {this.renderRedirect()}
+          {this.renderPrompt()}
           <PageHeader>
             {course.title}
-            <small>{course.id}</small>
+            <small> ({course.id})</small>
           </PageHeader>
           <div className="courseImageContainer">
             <Image responsive src={course.imagePath} className="courseImage" />;
@@ -85,7 +125,9 @@ class Course extends React.Component {
               <Row>
                 <Col xs={6} md={6}>
                   <Button bsStyle="primary">Edit</Button>
-                  <Button bsStyle="danger">Delete</Button>
+                  <Button onClick={() => this.showPrompt()} bsStyle="danger">
+                    Delete
+                  </Button>
                 </Col>
               </Row>
               <Row>
