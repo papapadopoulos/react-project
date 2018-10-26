@@ -1,12 +1,13 @@
 import React from "react";
-import { Navbar, Nav, NavItem} from "react-bootstrap";
+import { Navbar, Nav, NavItem } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const NavigationBar = () => {
   return (
     <Navbar>
       <Navbar.Header>
         <Navbar.Brand>
-          <a href="#home">Code.Hub Dashboard</a>
+          <Link to="/">Code.Hub Dashboard</Link>
         </Navbar.Brand>
       </Navbar.Header>
       <Nav>
