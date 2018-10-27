@@ -7,38 +7,36 @@ class Prompt extends React.Component {
 
     this.state = {
       show: props.show,
-      action: props.action,
-      actionTitle: props.actionTitle,
-      title: props.title,
-      description: props.description
     };
   }
 
   handleHide = () => {
-    this.setState({ show: false });
+    console.log("HandlHide");
+    this.props.togglePrompt();
+    this.setState({ show: false, showPrompt: false });
   };
 
   handleAction = () => {
-    this.state.action();
+    this.props.action();
   };
 
   render() {
     return (
       <Modal
-        show={this.state.show}
-        onHide={this.handleHide}
+        show={this.props.show}
+        onHide={this.props.togglePrompt}
         container={this}
         aria-labelledby="contained-modal-title"
       >
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title">{this.state.title}</Modal.Title>
+          <Modal.Title id="contained-modal-title">{this.props.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {this.state.description}
+          {this.props.description}
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle="danger" onClick={this.handleAction}>{this.state.actionTitle}</Button>
-          <Button onClick={this.handleHide}>Close</Button>
+          <Button bsStyle="danger" onClick={this.handleAction}>{this.props.actionTitle}</Button>
+          <Button onClick={this.props.togglePrompt}>Close</Button>
         </Modal.Footer>
       </Modal>
     );
