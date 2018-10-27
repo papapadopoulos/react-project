@@ -20,9 +20,10 @@ class Course extends React.Component {
     this.state = { isFetching: true };
   }
 
-  showPrompt = () => {
+  togglePrompt = () => {
+    console.log("togglePromot");
     this.setState({
-      showPrompt: true
+      showPrompt: !this.state.showPrompt
     });
   };
 
@@ -30,7 +31,8 @@ class Course extends React.Component {
     if (this.state.showPrompt) {
       return (
         <Prompt
-          show={true}
+          show={this.state.showPrompt}
+          togglePrompt={() => this.togglePrompt()}
           action={() => this.handleDelete(this.state.course.id)}
           actionTitle="Delete"
           title={`Deleting ${this.state.course.title}...`}
@@ -61,82 +63,101 @@ class Course extends React.Component {
     axios
       .get(`http://localhost:3000/courses/${this.match.params.courseId}`)
       .then(res => {
-        const course = res.data;
         this.setState({
-          course: course
+          course: res.data
         });
-        axios
-          .get(`http://localhost:3000/instructors/${course.instructors[0]}`)
-          .then(res2 => {
-            const inst = res2.data;
-            this.setState({
-              instructor: inst,
-              isFetching: false
-            });
-          });
+        let instructorsPromises = [];
+
+        instructorsPromises = res.data.instructors.map(ins =>
+          axios.get(`http://localhost:3000/instructors/${ins}`)
+        );
+        console.log(instructorsPromises);
+        return Promise.all(instructorsPromises);
+      })
+      .then(res => {
+        console.log(res);
+        this.setState({
+          instructors: res.map(r => r.data),
+          isFetching: false
+        });
       });
   }
 
   render() {
-    const { course, isFetching, instructor } = this.state;
+    const { course, isFetching, instructors } = this.state;
 
     if (!isFetching) {
       return (
         <div>
           {this.renderRedirect()}
           {this.renderPrompt()}
-          <PageHeader>
-            {course.title}
-            <small> ({course.id})</small>
-          </PageHeader>
-          <div className="courseImageContainer">
-            <Image responsive src={course.imagePath} className="courseImage" />;
-          </div>
-          <div className="courseInfoContainer">
-            <Grid>
-              <Row>
-                <Col xs={6} md={6}>
-                  {" "}
-                  {`Price: ${course.price.normal}€`}{" "}
+          <Grid>
+            <Row>
+              <Col xs={12} md={12}>
+                <PageHeader>
+                  {course.title}
+                  <small> ({course.id})</small>
+                </PageHeader>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} md={12}>
+                <div className="courseImageContainer">
+                  <Image
+                    responsive
+                    src={course.imagePath}
+                    className="courseImage"
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={6} md={6}>
+                {" "}
+                {`Price: ${course.price.normal}€`}{" "}
+              </Col>
+              <Col xs={6} md={6} className="floatRight">
+                {" "}
+                {`Duration: ${course.duration}`}{" "}
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={6} md={6}>
+                Bookable: {course.open && "\u2713"}
+              </Col>
+              <Col xs={6} md={6} className="floatRight">
+                {" "}
+                {`Dates: ${course.dates.start_date} - ${
+                  course.dates.end_date
+                }`}{" "}
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                xs={12}
+                md={12}
+                dangerouslySetInnerHTML={{ __html: course.description }}
+              />
+            </Row>
+            <Row>
+              <Col xs={6} md={6}>
+                <Button bsStyle="primary">Edit</Button>
+                <Button onClick={() => this.togglePrompt()} bsStyle="danger">
+                  Delete
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} md={12}>
+                <h3>Instructors</h3>
+              </Col>
+              {instructors.map(instructor => (
+                <Col key={instructor.id} xs={12} md={6}>
+                  <Instructor key={instructor.id} instructor={instructor} />
                 </Col>
-                <Col xs={6} md={6} className="floatRight">
-                  {" "}
-                  {`Duration: ${course.duration}`}{" "}
-                </Col>
-              </Row>
-              <Row>
-                <Col xs={6} md={6}>
-                  Bookable: {course.open && "\u2713"}
-                </Col>
-                <Col xs={6} md={6} className="floatRight">
-                  {" "}
-                  {`Dates: ${course.dates.start_date} - ${
-                    course.dates.end_date
-                  }`}{" "}
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  xs={12}
-                  md={12}
-                  dangerouslySetInnerHTML={{ __html: course.description }}
-                />
-              </Row>
-              <Row>
-                <Col xs={6} md={6}>
-                  <Button bsStyle="primary">Edit</Button>
-                  <Button onClick={() => this.showPrompt()} bsStyle="danger">
-                    Delete
-                  </Button>
-                </Col>
-              </Row>
-              <Row>
-                <Col xs={12} md={12}>
-                  <Instructor instructor={instructor} />
-                </Col>
-              </Row>
-            </Grid>
-          </div>
+              ))}
+            </Row>
+          </Grid>
         </div>
       );
     } else {

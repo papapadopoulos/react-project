@@ -23,6 +23,26 @@
   ],
   "courses": [
     {
+      "id": "02",
+      "title": "User eXperience (UX) Research",
+      "imagePath": "https://www.codehub.gr/wp-content/uploads/2018/01/UI-UX_FB_Post_1200x1200.jpg",
+      "price": {
+        "normal": 500,
+        "early_bird": 450
+      },
+      "dates": {
+        "start_date": "2018-10-05",
+        "end_date": "2018-10-27"
+      },
+      "duration": "4 Fridays and 4 Saturdays",
+      "open": true,
+      "instructors": [
+        "01",
+        "02"
+      ],
+      "description": "<p>Do you want to <strong>design products based on opinions or based on evidence</strong>?</p><p>In this course you will learn how <strong>UX research</strong> builds products that users really need, can and want to use!</p>"
+    },
+    {
       "id": "03",
       "title": "Advanced Analytics",
       "imagePath": "https://www.codehub.gr/wp-content/uploads/2018/07/AdvancedAnalytics_1200x628.jpg",

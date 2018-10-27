@@ -4,7 +4,7 @@ import {Badge as ReactBadge} from "react-bootstrap";
 
 const Badge = ({title, bubble}) => {
   return(<>
-      {title} <ReactBadge>{bubble}</ReactBadge>
+      {title} <ReactBadge pullRight>{bubble}</ReactBadge>
       </>
   )
 };
