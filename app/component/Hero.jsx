@@ -4,8 +4,8 @@ import { Jumbotron } from "react-bootstrap";
 const Hero = () => {
   return (
     <Jumbotron>
-      <h1>Paok</h1>
-      <p>asdasdasdas</p>
+      <h1>Welcome to Lotos 10 Awesome Team</h1>
+      <p>Just have fun man...</p>
     </Jumbotron>
   );
 };

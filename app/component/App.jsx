@@ -1,17 +1,35 @@
 import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import NavigationBar from "./NavigationBar";
+import Course from "./Course";
+import Courses from "./Courses";
+import Home from "./Home";
+import Input from "./Forms/Input";
 
-import Hero from "./Hero";
-import Badge from "./Badge";
 
-const App = () => {
-  return (
-    <>
-      <Hero />
-      <Badge title={"WOW"} bubble={55} /> <br />
-      <Badge title={"WOW2"} bubble={535} /> <br />
-      <Badge title={"WOW3"} bubble={515} /> <br />
-    </>
-  );
-};
+class App extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  // }
+
+  render() {
+    return (
+      <>
+        <Router>
+          <div>
+            <NavigationBar />
+            <div className="mainContainer">
+              <Route exact path="/" component={Home} />
+              <Route path="/course/:courseId" component={Course} />
+              <Route path="/courses" component={Courses} />
+              <Route path="/create/course" component={Input} />
+              {/* <Route component={Page404} /> */}
+            </div>
+          </div>
+        </Router>
+      </>
+    );
+  }
+}
 
 export default App;
