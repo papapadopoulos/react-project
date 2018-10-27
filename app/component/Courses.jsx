@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { PageHeader, Grid, Col, Row } from "react-bootstrap";
+import { PageHeader, Grid, Col, Row, Panel } from "react-bootstrap";
 import CoursesCourse from "./CoursesCourse";
 
 
@@ -31,21 +31,24 @@ class Courses extends React.Component {
                 </PageHeader>
                 <Grid>
                     <Row>
+
                         {courses.map(course => (
-                            <Col xs={4} md={4}>
-                               <CoursesCourse title={course.title}
-                                image={course.imagePath}
-                                price={course.price.normal}
-                                bookable={course.open}
-                                duration={course.duration}
-                                dates={course.dates}
-                            /> 
+                            <Col key = {course.id} xs={4} md={4}>
+                                <Panel>
+                                    <CoursesCourse title={course.title}
+                                        image={course.imagePath}
+                                        price={course.price.normal}
+                                        bookable={course.open}
+                                        duration={course.duration}
+                                        dates={course.dates}
+                                    />
+                                </Panel>
+
                             </Col>
                         ))}
-
                     </Row>
                 </Grid>
-            </div>
+            </div >
         );
     }
 }
