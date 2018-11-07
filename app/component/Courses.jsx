@@ -7,18 +7,26 @@ import CoursesCourse from "./CoursesCourse";
 class Courses extends React.Component {
     constructor({ props }) {
         super(props);
-        this.state = { courses: [] };
+        this.state = { courses: [] , hasError:false};
         // this.state = {isFeaching: true};
     }
 
     componentDidMount() {
-        axios.get("http://localhost:3000/courses").then(res => {
+        axios.get("http://localhost:3000/courses")
+        .then(res => {
             const courses = res.data;
             this.setState({ courses });
-        });
+        })
+        .catch((error) => {
+            this.setState({hasError:true});
+          })
     }
 
     render() {
+        if (this.state.hasError) {
+            // You can render any custom fallback UI
+            return <h1>Something went wrong.</h1>;
+          }
         const { courses } = this.state;
 
         return (
@@ -31,7 +39,6 @@ class Courses extends React.Component {
                 </PageHeader>
                 <Grid>
                     <Row>
-
                         {courses.map(course => (
                             <Col key = {course.id} xs={4} md={4}>
                                 <Panel>
@@ -41,6 +48,7 @@ class Courses extends React.Component {
                                         bookable={course.open}
                                         duration={course.duration}
                                         dates={course.dates}
+                                        id={course.id}
                                     />
                                 </Panel>
 
