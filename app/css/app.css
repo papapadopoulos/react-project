@@ -34,3 +34,8 @@ button {
 .modal-container .modal-backdrop {
   position: absolute;
 }
+
+.bigPadding {
+  margin: 100px!important;
+  padding: 100px!important;
+}

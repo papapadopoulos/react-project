@@ -12,6 +12,7 @@ import {
 import { Redirect } from "react-router-dom";
 import Instructor from "./Instructor";
 import Prompt from "./Modals/Prompt";
+import Loader from "./Loader";
 
 class Course extends React.Component {
   constructor({ props, match }) {
@@ -71,11 +72,9 @@ class Course extends React.Component {
         instructorsPromises = res.data.instructors.map(ins =>
           axios.get(`http://localhost:3000/instructors/${ins}`)
         );
-        console.log(instructorsPromises);
         return Promise.all(instructorsPromises);
       })
       .then(res => {
-        console.log(res);
         this.setState({
           instructors: res.map(r => r.data),
           isFetching: false
@@ -161,7 +160,7 @@ class Course extends React.Component {
         </div>
       );
     } else {
-      return <div>Fetching...</div>;
+      return <div><Loader/></div>;
     }
   }
 }

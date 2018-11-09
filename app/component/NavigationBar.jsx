@@ -12,7 +12,7 @@ const NavigationBar = () => {
         </Navbar.Brand>
       </Navbar.Header>
       <Nav>
-        <LinkContainer to="/courses">
+        <LinkContainer to="/hoc">
           <NavItem eventKey={1}>Courses</NavItem>
         </LinkContainer>
       </Nav>
