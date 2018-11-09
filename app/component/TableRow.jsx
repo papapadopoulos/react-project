@@ -9,9 +9,9 @@ const TableRow = ({ id, info, title, open: bookable, price, dates, match }) => {
         <td>{info}</td>
         <td>{title}</td>
         <td>{bookable && "\u2713"}</td>
-        <td>{price.normal}</td>
+        <td>{price && price.normal}</td>
         <td>
-          {dates.start_date} - {dates.end_date}
+          {dates && dates.start_date} - {dates && dates.end_date}
         </td>
         <td>
           <Link to={`/course/${id}`}>
