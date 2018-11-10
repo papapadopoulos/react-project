@@ -5,8 +5,7 @@ import {
   HelpBlock,
   FormControl,
   Checkbox,
-  Button,
-  Radio
+  Button
 } from "react-bootstrap";
 
 function FieldGroup({ id, label, help, ...props }) {
@@ -25,12 +24,18 @@ const CourseForm = ({
   handleChange,
   handleCheckboxChange,
   handleInstructorChange,
+  duration,
+  imagePath,
   price,
   early_bird,
   normal,
+  start_date,
+  end_date,
   title,
-  bookable,
-  instructors
+  open,
+  instructors,
+  selectedInstructors,
+  description
 }) => {
   return (
     <div>
@@ -42,6 +47,7 @@ const CourseForm = ({
           type="text"
           label="Title"
           placeholder="Enter course title"
+          value={title}
           onChange={handleChange}
         />
 
@@ -51,15 +57,17 @@ const CourseForm = ({
           type="text"
           label="Duration"
           placeholder="Duration"
+          value={duration}
           onChange={handleChange}
         />
 
         <FieldGroup
-          id="image_path"
-          name="image_path"
+          id="imagePath"
+          name="imagePath"
           type="text"
           label="Image Path"
           placeholder="Image Path"
+          value={imagePath}
           onChange={handleChange}
         />
 
@@ -67,11 +75,11 @@ const CourseForm = ({
           <b>Bookable</b>
         </h5>
         <Checkbox
-          id="bookable"
-          name="bookable"
+          id="open"
+          name="open"
           label="Bookable"
           onChange={handleCheckboxChange}
-          checked={bookable}
+          checked={open}
         >
           Bookable
         </Checkbox>
@@ -81,7 +89,16 @@ const CourseForm = ({
         </h5>
         <FormGroup>
           {instructors.map(instructor => (
-            <Checkbox name={instructor.id} id="instructors" key={instructor.id} onChange={handleInstructorChange}>
+            <Checkbox
+              name={instructor.id}
+              id="instructors"
+              key={instructor.id}
+              onChange={handleInstructorChange}
+              checked={
+                selectedInstructors.length>0 &&
+                selectedInstructors.filter(si => si == instructor.id).length>0
+              }
+            >
               {instructor.name.first} {instructor.name.last}
             </Checkbox>
           ))}
@@ -94,6 +111,7 @@ const CourseForm = ({
             name="description"
             componentClass="textarea"
             placeholder="Descriptipon"
+            value={description}
           />
         </FormGroup>
         <h3>Dates</h3>
@@ -104,6 +122,7 @@ const CourseForm = ({
           type="text"
           label="Start Date"
           placeholder="Start Date"
+          value={start_date}
           onChange={handleChange}
         />
 
@@ -113,6 +132,7 @@ const CourseForm = ({
           type="text"
           label="End Date"
           placeholder="End Date"
+          value={end_date}
           onChange={handleChange}
         />
 
@@ -122,7 +142,8 @@ const CourseForm = ({
           name="early_bird"
           type="text"
           label="Early Bird"
-          placeholder="Enter course title"
+          placeholder="Early bird price"
+          value={early_bird}
           onChange={handleChange}
         />
 
@@ -131,73 +152,13 @@ const CourseForm = ({
           name="normal"
           type="text"
           label="Normal"
-          placeholder="Enter course title"
+          placeholder="Normal price"
+          value={normal}
           onChange={handleChange}
         />
-
-        {/* <FieldGroup
-        id="formControlsEmail"
-        type="email"
-        label="Email address"
-        placeholder="Enter email"
-      /> */}
-        {/* <FieldGroup id="formControlsPassword" label="Password" type="password" />
-      <FieldGroup
-        id="formControlsFile"
-        type="file"
-        label="File"
-        help="Example block-level help text here."
-      />
-
-      <Checkbox checked readOnly>
-        Checkbox
-      </Checkbox>
-      <Radio checked readOnly>
-        Radio
-      </Radio>
-
-      <FormGroup>
-        <Checkbox inline>1</Checkbox> <Checkbox inline>2</Checkbox>{" "}
-        <Checkbox inline>3</Checkbox>
-      </FormGroup>
-      <FormGroup>
-        <Radio name="radioGroup" inline>
-          1
-        </Radio>{" "}
-        <Radio name="radioGroup" inline>
-          2
-        </Radio>{" "}
-        <Radio name="radioGroup" inline>
-          3
-        </Radio>
-      </FormGroup>
-
-      <FormGroup controlId="formControlsSelect">
-        <ControlLabel>Select</ControlLabel>
-        <FormControl componentClass="select" placeholder="select">
-          <option value="select">select</option>
-          <option value="other">...</option>
-        </FormControl>
-      </FormGroup>
-      <FormGroup controlId="formControlsSelectMultiple">
-        <ControlLabel>Multiple select</ControlLabel>
-        <FormControl componentClass="select" multiple>
-          <option value="select">select (multiple)</option>
-          <option value="other">...</option>
-        </FormControl>
-      </FormGroup>
-
-      <FormGroup controlId="formControlsTextarea">
-        <ControlLabel>Textarea</ControlLabel>
-        <FormControl componentClass="textarea" placeholder="textarea" />
-      </FormGroup>
-
-      <FormGroup>
-        <ControlLabel>Static text</ControlLabel>
-        <FormControl.Static>email@example.com</FormControl.Static>
-      </FormGroup> */}
-
-        <Button className="pull-right" bsStyle="primary" type="submit">Add Course</Button>
+        <Button className="pull-right" bsStyle="primary" type="submit">
+          Add Course
+        </Button>
       </form>
     </div>
   );

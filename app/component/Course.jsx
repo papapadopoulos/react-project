@@ -13,6 +13,7 @@ import { Redirect } from "react-router-dom";
 import Instructor from "./Instructor";
 import Prompt from "./Modals/Prompt";
 import Loader from "./Loader";
+import EditCourse from "./EditCourse";
 
 class Course extends React.Component {
   constructor({ props, match }) {
@@ -22,9 +23,14 @@ class Course extends React.Component {
   }
 
   togglePrompt = () => {
-    console.log("togglePromot");
     this.setState({
       showPrompt: !this.state.showPrompt
+    });
+  };
+
+  toggleEditCourse = () => {
+    this.setState({
+      showEditCourse: !this.state.showEditCourse
     });
   };
 
@@ -32,13 +38,47 @@ class Course extends React.Component {
     if (this.state.showPrompt) {
       return (
         <Prompt
+          showButtons={true}
           show={this.state.showPrompt}
           togglePrompt={() => this.togglePrompt()}
           action={() => this.handleDelete(this.state.course.id)}
           actionTitle="Delete"
           title={`Deleting ${this.state.course.title}...`}
-          description="Are you sure you want to delete this course? Seems quite useful to me!"
-        />
+        >
+          {() =>
+            "Are you sure you want to delete this course? Seems quite useful to me!"
+          }
+        </Prompt>
+      );
+    }
+  };
+
+  updateCourse = (course) => {
+    this.componentDidMount();
+  }
+
+  renderEditCourse = () => {
+    if (this.state.showEditCourse) {
+      return (
+        <Prompt
+          showButtons={false}
+          show={this.state.showEditCourse}
+          togglePrompt={() => this.toggleEditCourse()}
+          title={`Editing ${this.state.course.title}...`}
+        >
+          {() => (
+            <EditCourse
+              {...this.state.course}
+              handleHide={this.toggleEditCourse}
+              updateCourse={this.updateCourse}
+              selectedInstructors={this.state.instructors.map(i => i.id)}
+              early_bird={this.state.course.price.early_bird}
+              normal={this.state.course.price.normal}
+              start_date={this.state.course.dates.start_date}
+              end_date={this.state.course.dates.start_date}
+            />
+          )}
+        </Prompt>
       );
     }
   };
@@ -50,9 +90,6 @@ class Course extends React.Component {
   };
 
   handleDelete = id => {
-    {
-      console.log("delete handled");
-    }
     axios.delete(`http://localhost:3000/courses/${id}`).then(() => {
       this.setState({
         redirect: true
@@ -76,12 +113,15 @@ class Course extends React.Component {
       })
       .then(res => {
         this.setState({
+          course: {
+            ...this.state.course,
+            instructors: res.map(r => r.data)
+          },
           instructors: res.map(r => r.data),
           isFetching: false
         });
       });
   }
-
   render() {
     const { course, isFetching, instructors } = this.state;
 
@@ -90,6 +130,7 @@ class Course extends React.Component {
         <div>
           {this.renderRedirect()}
           {this.renderPrompt()}
+          {this.renderEditCourse()}
           <Grid>
             <Row>
               <Col xs={12} md={12}>
@@ -140,7 +181,12 @@ class Course extends React.Component {
             </Row>
             <Row>
               <Col xs={6} md={6}>
-                <Button bsStyle="primary">Edit</Button>
+                <Button
+                  onClick={() => this.toggleEditCourse()}
+                  bsStyle="primary"
+                >
+                  Edit
+                </Button>
                 <Button onClick={() => this.togglePrompt()} bsStyle="danger">
                   Delete
                 </Button>
@@ -160,7 +206,11 @@ class Course extends React.Component {
         </div>
       );
     } else {
-      return <div><Loader/></div>;
+      return (
+        <div>
+          <Loader />
+        </div>
+      );
     }
   }
 }
