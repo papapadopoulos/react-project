@@ -106,6 +106,7 @@ class EditCourse extends React.Component {
               handleCheckboxChange={this.handleCheckboxChange}
               handleInstructorChange={this.handleInstructorChange}
               handleSubmit={this.handleSubmit}
+              buttonText="Edit"
             />
           )}
         </ApiData>

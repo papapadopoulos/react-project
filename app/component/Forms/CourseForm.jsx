@@ -35,7 +35,8 @@ const CourseForm = ({
   open,
   instructors,
   selectedInstructors,
-  description
+  description,
+  buttonText
 }) => {
   return (
     <div>
@@ -157,7 +158,7 @@ const CourseForm = ({
           onChange={handleChange}
         />
         <Button className="pull-right" bsStyle="primary" type="submit">
-          Add Course
+          {buttonText}
         </Button>
       </form>
     </div>

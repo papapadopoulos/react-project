@@ -98,6 +98,7 @@ class AddCourse extends React.Component {
                 handleCheckboxChange={this.handleCheckboxChange}
                 handleInstructorChange={this.handleInstructorChange}
                 instructors={data}
+                buttonText="Add Course"
                 {...this.state}
               />
             </Jumbotron>

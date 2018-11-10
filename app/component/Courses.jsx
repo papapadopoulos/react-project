@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { PageHeader, Grid, Col, Row, Panel } from "react-bootstrap";
+import { PageHeader, Grid, Col, Row, Panel, Clearfix } from "react-bootstrap";
 import CoursesCourse from "./CoursesCourse";
 
 class Courses extends React.Component {
@@ -38,7 +38,7 @@ class Courses extends React.Component {
         <Grid>
           <Row>
             {courses.map(course => (
-              <Col key={course.id} xs={4} md={4}>
+              <Col key={course.id} xs={12} sm={6} md={4}>
                 <Panel>
                   <CoursesCourse
                     title={course.title}
@@ -50,6 +50,7 @@ class Courses extends React.Component {
                     id={course.id}
                   />
                 </Panel>
+                <Clearfix />
               </Col>
             ))}
           </Row>
