@@ -119,6 +119,22 @@
       ],
       "duration": "12312312",
       "id": "XP2H0qk"
+    },
+    {
+      "title": "SDAA",
+      "open": false,
+      "imagePath": "ASD",
+      "price": {
+        "early_bird": "ASD",
+        "normal": "ASD"
+      },
+      "dates": {
+        "start_date": "",
+        "end_date": ""
+      },
+      "instructors": [],
+      "duration": "ASD",
+      "id": "F5DW6eL"
     }
   ],
   "instructors": [

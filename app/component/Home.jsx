@@ -8,6 +8,13 @@ import ApiData from "./Api/ApiData";
 import Stats from "./Stats";
 
 class Home extends React.Component {
+
+  state={
+    viewAll:false
+  };
+  handleViewAll = () => {
+    this.setState({viewAll:true})
+  }
   render() {
     return (
       <div>
@@ -15,7 +22,7 @@ class Home extends React.Component {
 
         <ApiData url="stats">{data => <Stats stats={data} />}</ApiData>
         <ApiData url="courses">
-          {data => <LastCourses courses={data} />}
+          {data => <LastCourses courses={data} handleViewAll={this.handleViewAll} viewAll={this.state.viewAll} />}
         </ApiData>
       </div>
     );
