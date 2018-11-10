@@ -1,7 +1,7 @@
 import React from "react";
 import CourseForm from "./Forms/CourseForm";
 import axios from "axios";
-import ApiData from "./Api/ApiData"
+import ApiData from "./Api/ApiData";
 import { Jumbotron } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 
@@ -11,12 +11,14 @@ class AddCourse extends React.Component {
     this.state = {
       redirect: false,
       title: "",
-      price: {
-        early_bird: "",
-        normal: ""
-      },
-      bookable: false,
-      selectedInstructors: new Map()
+      start_date: "",
+      end_date: "",
+      early_bird: "",
+      normal: "",
+      open: false,
+      selectedInstructors: [],
+      duration: "",
+      imagePath: ""
     };
   }
 
@@ -31,12 +33,18 @@ class AddCourse extends React.Component {
   handleInstructorChange = event => {
     const id = event.target.name;
     const isChecked = event.target.checked;
-    this.setState(prevState => ({
-      selectedInstructors: prevState.selectedInstructors.set(id, isChecked)
-    }));
+    const { selectedInstructors } = this.state;
+    if (isChecked) {
+      selectedInstructors.push(id);
+    } else {
+      selectedInstructors.splice(selectedInstructors.indexOf(id), 1);
+    }
+    this.setState({
+      selectedInstructors
+    });
   };
 
-  renderRedirect = (id) => {
+  renderRedirect = id => {
     if (this.state.redirect) {
       return <Redirect to={`/course/${id}`} />;
     }
@@ -54,29 +62,25 @@ class AddCourse extends React.Component {
       end_date: this.state.end_date
     };
 
-    const instructors = [];
-    this.state.selectedInstructors.forEach(
-      (value, key, map) => value && instructors.push(key)
-    );
+    const { selectedInstructors: instructors } = this.state;
 
-    // this.setState({price});
-    const { title, description, bookable:open, image_path } = this.state;
+    const { title, description, open, imagePath, duration } = this.state;
     axios
       .post("http://localhost:3000/courses", {
         title,
         description,
         open,
-        image_path,
+        imagePath,
         price,
         dates,
-        instructors
+        instructors,
+        duration
       })
       .then(response => {
         this.setState({ redirect: true, savedId: response.data.id });
-        console.log(response);
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   };
 

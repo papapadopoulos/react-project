@@ -6,7 +6,7 @@ class Prompt extends React.Component {
     super(props, context);
 
     this.state = {
-      show: props.show,
+      show: props.show
     };
   }
 
@@ -29,15 +29,19 @@ class Prompt extends React.Component {
         aria-labelledby="contained-modal-title"
       >
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title">{this.props.title}</Modal.Title>
+          <Modal.Title id="contained-modal-title">
+            {this.props.title}
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          {this.props.description}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button bsStyle="danger" onClick={this.handleAction}>{this.props.actionTitle}</Button>
-          <Button onClick={this.props.togglePrompt}>Close</Button>
-        </Modal.Footer>
+        <Modal.Body>{this.props.children()}</Modal.Body>
+        {this.props.showButtons && (
+          <Modal.Footer>
+            <Button bsStyle="danger" onClick={this.handleAction}>
+              {this.props.actionTitle}
+            </Button>
+            <Button onClick={this.props.togglePrompt}>Close</Button>
+          </Modal.Footer>
+        )}
       </Modal>
     );
   }

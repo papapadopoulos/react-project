@@ -22,7 +22,7 @@ const LastCourses = ({courses}) => {
           </tr>
         </thead>
         <tbody>
-          {courses.slice(Math.max(courses.length - 5, 1)).map(course => (
+          {courses.slice(Math.max(courses.length - 5, 0)).map(course => (
             <TableRow key={course.id} {...course} />
           ))}
         </tbody>
