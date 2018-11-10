@@ -2,7 +2,7 @@ import React from "react";
 import { Navbar, Table, Button, NavItem, Nav } from "react-bootstrap";
 import TableRow from "./TableRow";
 
-const LastCourses = ({courses}) => {
+const LastCourses = ({ courses, handleViewAll, viewAll }) => {
   return (
     <div>
       <Navbar>
@@ -22,14 +22,16 @@ const LastCourses = ({courses}) => {
           </tr>
         </thead>
         <tbody>
-          {courses.slice(Math.max(courses.length - 5, 0)).map(course => (
-            <TableRow key={course.id} {...course} />
-          ))}
+          {viewAll
+            ? courses.map(course => <TableRow key={course.id} {...course} />)
+            : courses
+                .slice(Math.max(courses.length - 5, 0))
+                .map(course => <TableRow key={course.id} {...course} />)}
         </tbody>
       </Table>
       <Nav pullRight={true}>
         <NavItem eventKey={2} href="#">
-          <Button>View All</Button>
+          <Button onClick={handleViewAll}>View All</Button>
         </NavItem>
       </Nav>
     </div>
